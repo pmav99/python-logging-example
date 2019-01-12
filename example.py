@@ -13,6 +13,30 @@ import logging
 import logging.config
 import sys
 
+import yaml
+try:
+    from yaml import CLoader as YLoader, CDumper as YDumper
+except ImportError:
+    from yaml import YLoader, YDumper
+
+
+def get_json_config():
+    config_file = "log_config%d.json" % sys.version_info.major
+    logger.info("config file: %s", config_file)
+    # We use codecs.open because it is equivalent to Python 3 open()
+    with codecs.open(config_file, "r", encoding="utf-8") as fd:
+        config = json.load(fd)
+    return config
+
+
+def get_yaml_config():
+    config_file = "log_config.yml"
+    logger.info("config file: %s", config_file)
+    # We use codecs.open because it is equivalent to Python 3 open()
+    with codecs.open(config_file, "r", encoding="utf-8") as fd:
+        config = yaml.load(fd, Loader=YLoader)
+    return config
+
 
 def main():
     # each time we need to log something we can create a logger object
@@ -32,8 +56,6 @@ def main():
     import mypkg
 
 
-
-
 if __name__ == "__main__":
     # create an initial logger. It will only log to console and it will disabled
     # when we read the logging configuration from the config file.
@@ -47,15 +69,14 @@ if __name__ == "__main__":
     logger.info("we will be using which we can get e.g. as a command line argument etc.")
     logger.info("")
 
+    # get log configuration
+    log_config = get_yaml_config()
+    # log_config = get_json_config()
+
     # set up proper logging. This one disables the previously configured loggers.
-    config_file = "log_config%d.json" % sys.version_info.major
-    logger.info("config file: %s", config_file)
+    logging.config.dictConfig(log_config)
 
-    # We use codecs.open because it is equivalent to Python 3 open()
-    with codecs.open(config_file, "r", encoding="utf-8") as fd:
-        logging.config.dictConfig(json.load(fd))
-
-    logger = logging.getLogger()   # Probably not needed, but we don't lose anything to get it
+    logger = logging.getLogger()
     logger.info("This is the logger configured by `logging.config.dictConfig()`.")
 
     main()

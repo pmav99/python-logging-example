@@ -60,7 +60,8 @@
   "loggers": {
     "mypkg": {
       "handlers": ["console"],
-      "level": "DEBUG"
+      "level": "DEBUG",
+      "propagate": false
     },
     "elasticsearch": {
       "handlers": ["console"],
