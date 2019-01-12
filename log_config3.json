@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "formatters": {
+    "brief": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}; {name:<15s}; {message:s}"
+    },
+    "standard": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}; {asctime:s}; {name:<25s} {funcName:<15s} {lineno:4d}; {message:s}"
+    },
+    "multi-process": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}; {process:5d}; {asctime:s}; {name:<15s} {lineno:4d}; {message:s}"
+    },
+    "multi-thread": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}; {threadName:5d}; {asctime:s}; {name:<15s} {lineno:4d}; {message:s}"
+    },
+    "verbose": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}; {process:5d}; {threadName:8s}; {asctime:s}; {name:<15s} {lineno:4d}; {message:s}"
+    },
+    "multiline": {
+      "class": "logging.Formatter",
+      "style": "{",
+      "datefmt": "%I:%M:%S",
+      "format": "{levelname:8s}\n{process:5d}\n{threadName:8s}\n{asctime:s}\n{name:<15s}{lineno:4d}\n{message:s}\n"
+    }
+  },
+  "handlers": {
+    "console":{
+      "level": "DEBUG",
+      "class": "logging.StreamHandler",
+      "formatter": "standard",
+      "stream" : "ext://sys.stdout"
+    },
+    "file_handler": {
+      "level": "INFO",
+      "class": "logging.handlers.WatchedFileHandler",
+      "formatter": "verbose",
+      "filename": "/tmp/file_handler.log",
+      "mode": "a",
+      "encoding": "utf-8"
+    },
+    "smtp": {
+      "level": "ERROR",
+      "class": "logging.handlers.SMTPHandler",
+      "formatter": "multiline",
+      "mailhost": ["127.0.0.1", 60025],
+      "fromaddr": "sender@example.com",
+      "toaddrs": ["recipient@example.com"],
+      "subject": "Something went wrong"
+    }
+  },
+  "loggers": {
+    "mypkg": {
+      "handlers": ["console"],
+      "level": "DEBUG",
+      "propagate": false
+    },
+    "elasticsearch": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    },
+    "requests": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    },
+    "sqlalchemy": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    }
+  },
+  "root": {
+    "handlers": ["console", "file_handler", "smtp"],
+    "level": "DEBUG"
+  }
+}

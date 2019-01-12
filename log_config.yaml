@@ -1,0 +1,47 @@
+version: 1
+disable_existing_loggers: true
+formatters:
+  brief:
+    format: "%(levelname)-8s; %(name)-35s; %(message)s"
+  standard:
+    format: "%(asctime)s; %(levelname)-8s; %(name)-35s; %(funcName)-20s;%(lineno)4d: %(message)s"
+  multi_process:
+    format: "%(asctime)s; %(levelname)-8s; [%(thread;)s]; %(name)-35s; %(funcName)-20s;%(lineno)-4d: %(message)s"
+  multi_thread:
+    format: "%(asctime)s; %(levelname)-8s; [%(process)d]; %(name)-35s; %(funcName)-20s;%(lineno)-4d: %(message)s"
+  verbose:
+    format: "%(asctime)s; %(levelname)-8s; [%(process)d - %(thread)s]; %(name)-35s; %(funcName)-20s;%(lineno)4d: %(message)s"
+  multi_line:
+    format: "Level: %(levelname)s\nTime: %(asctime)s\nProcess: %(process)d\nThread: %(thread)s\nLogger: %(name)s\nPath: %(module)s:%(lineno)d\nFunction :%(funcName)s\nMessage: %(message)s\n"
+handlers:
+  console:
+    level: DEBUG
+    class: logging.StreamHandler
+    formatter: standard
+    stream : ext://sys.stdout
+  errors:
+    level: WARNING
+    class: logging.handlers.WatchedFileHandler
+    formatter: verbose
+    filename: /tmp/edgar_errors.log
+    mode: a
+    encoding: utf-8
+  smtp:
+    level: ERROR
+    class: logging.handlers.SMTPHandler
+    formatter: multi_line
+    mailhost: [127.0.0.1, 25]
+    fromaddr: sender@example.com
+    toaddrs: [recipient@example.com]
+    subject: Something went wrong
+loggers:
+  mypkg:
+    level: DEBUG
+  requests:
+    level: WARNING
+root:
+  level: DEBUG
+  handlers:
+    - console
+    - file_handler
+    - smtp

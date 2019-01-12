@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "disable_existing_loggers": true,
+  "formatters": {
+    "brief": {
+      "class": "logging.Formatter",
+      "datefmt": "%I:%M:%S",
+      "format": "%(levelname)-8s; %(name)-15s; %(message)s"
+    },
+    "standard": {
+      "class": "logging.Formatter",
+      "datefmt": "%I:%M:%S",
+      "format": "%(levelname)-8s; %(asctime)s; %(name)-15s; %(funcName)s;%(lineno)d: %(message)s"
+    },
+    "multi-process": {
+      "class": "logging.Formatter",
+      "datefmt": "%I:%M:%S",
+      "format": "%(levelname)-8s; [%(process)d]; %(name)-15s; %(module)s:%(funcName)s;%(lineno)d: %(message)s"
+    },
+    "multi-thread": {
+      "class": "logging.Formatter",
+      "datefmt": "%I:%M:%S",
+      "format": "%(levelname)-8s; %(threadName)s; %(name)-15s; %(module)s:%(funcName)s;%(lineno)d: %(message)s"
+    },
+    "verbose": {
+      "class": "logging.Formatter",
+      "datefmt": "%I:%M:%S",
+      "format": "%(levelname)-8s; [%(process)d]; %(threadName)s; %(name)-15s; %(module)s:%(funcName)s;%(lineno)d: %(message)s"
+    },
+    "multiline": {
+      "class": "logging.Formatter",
+      "format": "Level: %(levelname)s\nTime: %(asctime)s\nProcess: %(process)d\nThread: %(threadName)s\nLogger: %(name)s\nPath: %(module)s:%(lineno)d\nFunction :%(funcName)s\nMessage: %(message)s\n"
+    }
+  },
+  "handlers": {
+    "console":{
+      "level": "DEBUG",
+      "class": "logging.StreamHandler",
+      "formatter": "verbose",
+      "stream" : "ext://sys.stdout"
+    },
+    "file_handler": {
+      "level": "INFO",
+      "class": "logging.handlers.WatchedFileHandler",
+      "formatter": "verbose",
+      "filename": "/tmp/file_handler.log",
+      "mode": "a",
+      "encoding": "utf-8"
+    },
+    "smtp": {
+      "level": "ERROR",
+      "class": "logging.handlers.SMTPHandler",
+      "formatter": "multiline",
+      "mailhost": ["127.0.0.1", 60025],
+      "fromaddr": "sender@example.com",
+      "toaddrs": ["recipient@example.com"],
+      "subject": "Something went wrong"
+    }
+  },
+  "loggers": {
+    "mypkg": {
+      "handlers": ["console"],
+      "level": "DEBUG"
+    },
+    "elasticsearch": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    },
+    "requests": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    },
+    "sqlalchemy": {
+      "handlers": ["console"],
+      "level": "WARNING"
+    }
+  },
+  "root": {
+    "handlers": ["console", "file_handler", "smtp"],
+    "level": "DEBUG"
+  }
+}
