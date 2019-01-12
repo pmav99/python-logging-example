@@ -1,6 +1,6 @@
 # python_logging_example
 
-A tutorial for python logging
+An example for python logging using StdLib.
 
 ## Prerequisites
 
