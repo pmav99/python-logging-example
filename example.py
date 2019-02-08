@@ -13,11 +13,10 @@ import logging
 import logging.config
 import sys
 
-import yaml
-try:
-    from yaml import CLoader as YLoader, CDumper as YDumper
-except ImportError:
-    from yaml import YLoader, YDumper
+from ruamel.yaml import YAML
+
+yaml=YAML(typ="safe", pure=True)
+yaml.load("""a:\n  b: 2\n  c: 3\n""")
 
 
 def get_json_config():
@@ -34,7 +33,7 @@ def get_yaml_config():
     logger.info("config file: %s", config_file)
     # We use codecs.open because it is equivalent to Python 3 open()
     with codecs.open(config_file, "r", encoding="utf-8") as fd:
-        config = yaml.load(fd, Loader=YLoader)
+        config = yaml.load(fd.read())
     return config
 
 
@@ -70,8 +69,8 @@ if __name__ == "__main__":
     logger.info("")
 
     # get log configuration
-    log_config = get_yaml_config()
     # log_config = get_json_config()
+    log_config = get_yaml_config()
 
     # set up proper logging. This one disables the previously configured loggers.
     logging.config.dictConfig(log_config)
