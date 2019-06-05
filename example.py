@@ -16,7 +16,6 @@ import sys
 from ruamel.yaml import YAML
 
 yaml=YAML(typ="safe", pure=True)
-yaml.load("""a:\n  b: 2\n  c: 3\n""")
 
 
 def get_json_config():
