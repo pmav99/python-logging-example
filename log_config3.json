@@ -43,7 +43,7 @@
     "console":{
       "level": "DEBUG",
       "class": "logging.StreamHandler",
-      "formatter": "standard",
+      "formatter": "verbose",
       "stream" : "ext://sys.stdout"
     },
     "file_handler": {
