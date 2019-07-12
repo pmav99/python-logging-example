@@ -5,7 +5,7 @@ An example for setting up logging using Python's StdLib.
 ## Prerequisites
 
 To use the yaml configuration file you will need to install
-[pyyaml](https://pypi.org/project/PyYAML/).
+[ruamel.yaml](https://pypi.org/project/ruamel.yaml/).
 
 ``` shell
 pip install ruamel.yaml
